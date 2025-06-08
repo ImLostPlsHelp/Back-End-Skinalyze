@@ -1,0 +1,16 @@
+{
+  "name": "skinalyze-backend",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "backend/server.js",
+  "scripts": {
+    "start": "node backend/server.js"
+  },
+  "dependencies": {
+    "@hapi/hapi": "^21.3.2",
+    "bcrypt": "^5.1.0",
+    "dotenv": "^16.3.1",
+    "idb": "^8.0.3",
+    "pg": "^8.11.3"
+  }
+}
