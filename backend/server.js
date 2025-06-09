@@ -5,9 +5,14 @@ dotenv.config();
 
 const init = async () => {
   const server = Hapi.server({
-    port: process.env.PORT || 3000,
-    host: '0.0.0.0'
-  });
+    port: 3000,
+    host: 'localhost',
+    routes: {
+    cors: {
+      origin: ['*'],
+    },
+  },
+});
 
   server.route(authRoutes);
 
