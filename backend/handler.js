@@ -1,5 +1,5 @@
 // backend/routes/auth.js
-import { auth, db } from "../firebase.js";
+import { auth, db, getAuth, signInWithEmailAndPassword } from "../firebase.js";
 
 export const SignUpHandler = async (request, h) => {
   const { firstName, lastName, email, password } = request.payload;
@@ -12,7 +12,6 @@ export const SignUpHandler = async (request, h) => {
     const userRecord = await auth.createUser({
       email,
       password,
-      displayName: `${firstName} ${lastName}`,
     });
 
     console.log("User created:", userRecord.uid);
@@ -48,7 +47,8 @@ export const LoginHandler = async (request, h) => {
   }
 
   try {
-    auth.signInWithEmailAndPassword(email, password).then((userCredential) => {
+    const login = getAuth();
+    await signInWithEmailAndPassword(login,email, password).then((userCredential) => {
       const user = userCredential.user;
       return h.response({
         message: "Login Successful",

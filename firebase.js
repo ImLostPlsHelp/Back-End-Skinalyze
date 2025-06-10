@@ -1,5 +1,6 @@
 import admin from 'firebase-admin';
 import serviceAccount from './serviceAccountKey.json' with { type: 'json' };
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 
 if (!admin.apps.length) {
   admin.initializeApp({
@@ -10,4 +11,4 @@ if (!admin.apps.length) {
 const auth = admin.auth();
 const db = admin.firestore();
 
-export { auth, db };
+export { auth, db, getAuth, signInWithEmailAndPassword};

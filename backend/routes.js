@@ -6,4 +6,9 @@ export const routes = [
         path: '/api/signup',
         handler: SignUpHandler,
     },
+    {
+        method: 'POST',
+        path: '/api/login',
+        handler: LoginHandler,
+    },
 ];
