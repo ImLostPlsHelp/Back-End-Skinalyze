@@ -1,6 +1,6 @@
 import Hapi from '@hapi/hapi';
-import authRoutes from './routes/auth.js';
 import dotenv from 'dotenv';
+import { routes } from './routes.js';
 dotenv.config();
 
 const init = async () => {
@@ -14,7 +14,7 @@ const init = async () => {
   },
 });
 
-  server.route(authRoutes);
+  server.route(routes);
 
   await server.start();
   console.log('Server running on', server.info.uri);
