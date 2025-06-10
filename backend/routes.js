@@ -1,4 +1,4 @@
-import {SignUpHandler, LoginHandler, GroqHandler} from './handler.js';
+import {SignUpHandler, LoginHandler, GroqHandler, saveResultHandler} from './handler.js';
 
 export const routes = [
     {
@@ -16,4 +16,9 @@ export const routes = [
         path: '/get-groq-advice',
         handler: GroqHandler,
     },
+    {
+        method: 'POST',
+        path: '/save-result',
+        handler: saveResultHandler,
+    }
 ];

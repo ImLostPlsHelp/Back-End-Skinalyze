@@ -3,6 +3,7 @@ import { auth, db, getAuth, signInWithEmailAndPassword } from "../firebase.js";
 import express from "express";
 import Groq from "groq-sdk";
 import dotenv from "dotenv";
+import { nanoid } from "nanoid";
 
 dotenv.config();
 
@@ -102,3 +103,46 @@ export const GroqHandler = async (request, h) => {
         h.response({ error: 'Failed to generate advice' }).code(500);
     }
 };
+
+export const saveResultHandler = async (request, h) => {
+  const authToken = request.headers.authorization;
+  const { name, risk, status, image } = request.payload;
+  let uid = null;
+  if (!name || !risk || !status || !image) {
+    return h.response({ error: "Semua field harus diisi" }).code(400);
+  }
+
+  if(!authToken) {
+    return h.response({ error: "Unauthorized" }).code(401);
+  }
+
+  try {
+    const token = await auth.verifyIdToken(authToken.replace('Bearer ', ''));
+    uid = token.uid;
+  } catch (error) {
+    console.error("Error Verifying Token:", error);
+    return h.response({ error: "Unauthorized" }).code(401);
+  }
+
+  if(!uid) {
+    console.error("No UID found in token");
+    return h.response({ error: "Unauthorized" }).code(401);
+  }
+
+  try {
+    const resultId = nanoid();
+    await db.collection("save-result").doc(resultId).set({
+      uid,
+      name,
+      risk,
+      status,
+      image,
+      createdAt: new Date(),
+    });
+
+    return h.response({ message: "Result saved successfully", id: resultId }).code(201);
+  } catch(error) {
+    console.error("Error saving result:", error);
+    return h.response({ error: "Gagal menyimpan hasil. Silakan coba lagi."}).code(500);
+  }
+}
