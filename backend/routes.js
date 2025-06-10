@@ -1,4 +1,4 @@
-import {SignUpHandler, LoginHandler} from './handler.js';
+import {SignUpHandler, LoginHandler, GroqHandler} from './handler.js';
 
 export const routes = [
     {
@@ -10,5 +10,10 @@ export const routes = [
         method: 'POST',
         path: '/api/login',
         handler: LoginHandler,
+    },
+    {
+        method: 'POST',
+        path: '/get-groq-advice',
+        handler: GroqHandler,
     },
 ];
