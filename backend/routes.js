@@ -1,4 +1,4 @@
-import {SignUpHandler, LoginHandler, GroqHandler, saveResultHandler} from './handler.js';
+import {SignUpHandler, LoginHandler, GroqHandler, saveResultHandler, getScanHistoryHandler} from './handler.js';
 
 export const routes = [
     {
@@ -20,5 +20,10 @@ export const routes = [
         method: 'POST',
         path: '/save-result',
         handler: saveResultHandler,
+    },
+    {
+        method: 'GET',
+        path: '/get-result',
+        handler: getScanHistoryHandler,
     }
 ];

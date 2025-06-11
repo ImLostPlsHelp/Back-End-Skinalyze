@@ -3,7 +3,7 @@ import serviceAccount from './serviceAccountKey.json' with { type: 'json' };
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import { initializeApp } from "firebase/app";
 import CONFIG from './config.js';
-import { getFirestore, doc, setDoc } from "firebase/firestore";
+import { getFirestore, doc, setDoc, collection, query, where,} from "firebase/firestore";
 
 if (!admin.apps.length) {
   admin.initializeApp({
@@ -24,4 +24,4 @@ const dbUser = getFirestore(app);
 const auth = admin.auth();
 const db = admin.firestore();
 
-export { auth, db, getAuth, signInWithEmailAndPassword, authUser, dbUser, app, getFirestore };
+export { auth, db, getAuth, signInWithEmailAndPassword, authUser, dbUser, app, getFirestore , collection, doc, setDoc, query, where};
