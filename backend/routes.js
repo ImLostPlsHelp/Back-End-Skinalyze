@@ -40,9 +40,11 @@ export const routes = [
   },
   {
     method: "OPTIONS",
-    path: "/{any*}",
+    path: "/{any*}", // Menangkap semua path untuk metode OPTIONS
     handler: (request, h) => {
-      return h.response().code(200);
+      // Cukup kembalikan respons 204 No Content.
+      // Header CORS akan ditambahkan oleh Hapi berdasarkan konfigurasi global.
+      return h.response().code(204);
     },
   },
 ];
