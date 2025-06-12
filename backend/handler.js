@@ -121,12 +121,20 @@ export const GroqHandler = async (request, h) => {
               1.  DESKRIPSI: Jelaskan secara singkat apa itu kondisi kulit yang disebutkan.
               2.  SARAN: Berikan beberapa tips perawatan umum yang aman dan tidak bersifat medis.
 
+              Dalam memberikan jawaban tidak perlu menulis ulang seperti **SARAN** dan **DESKRIPSI** langsung saja.
+
+
               PENTING: Setelah menulis bagian DESKRIPSI, sisipkan sebuah pemisah unik di baris baru yaitu: ---PEMISAH---
               
               Contoh format jawaban yang benar:
               [Ini adalah paragraf deskripsi penyakitnya...]
               ---PEMISAH---
               [Ini adalah paragraf saran perawatannya...]
+
+              Apabila terdpat banyak saran, format saran harus menggunakan numbering yang jelas seperti:
+              1. 
+              2. 
+              3.
 
               Selalu akhiri bagian SARAN dengan peringatan untuk berkonsultasi dengan dokter profesional. Jangan pernah memberikan diagnosis atau resep medis.
             `,
