@@ -42,8 +42,7 @@ export const routes = [
     method: "OPTIONS",
     path: "/{any*}", // Menangkap semua path untuk metode OPTIONS
     handler: (request, h) => {
-      // Cukup kembalikan respons 204 No Content.
-      // Header CORS akan ditambahkan oleh Hapi berdasarkan konfigurasi global.
+      console.log("OPTIONS handler / {any*} di backend/routes.js terpanggil untuk path:", request.path); // Tambahkan log ini
       return h.response().code(204);
     },
   },
