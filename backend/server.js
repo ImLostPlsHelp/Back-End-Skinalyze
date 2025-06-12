@@ -28,8 +28,8 @@ const init = async () => {
 
   server.route(routes);
 
-  await server.initialize();
-  // console.log("Server running on", server.info.uri);
+  await server.start();
+  console.log("Server running on", server.info.uri);
 };
 
 init();
