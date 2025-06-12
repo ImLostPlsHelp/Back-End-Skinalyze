@@ -1,26 +1,35 @@
-import Hapi from '@hapi/hapi';
-import routes from './routes.js';
+import Hapi from "@hapi/hapi";
+import dotenv from "dotenv";
+import { routes } from "./routes.js";
+dotenv.config();
 
 const init = async () => {
   const server = Hapi.server({
     port: process.env.PORT || 3000,
-    host: '0.0.0.0',
+    host: "0.0.0.0",
+    routes: {
+      cors: {
+        origin: ["https://capstone-dbs-skinalyze.vercel.app"],
+        credentials: true,
+        headers: [
+          "Accept",
+          "Authorization",
+          "Content-Type",
+          "If-None-Match",
+          "Origin",
+          "X-Requested-With",
+        ],
+        methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
+        exposedHeaders: ["WWW-Authenticate", "Server-Authorization"],
+        maxAge: 600,
+      },
+    },
   });
 
-  await server.register(routes);
+  server.route(routes);
+
   await server.initialize();
-
-  if (!process.env.VERCEL) {
-    await server.start();
-    console.log('Server running on %s', server.info.uri);
-  }
-
-  return server;
+  // console.log("Server running on", server.info.uri);
 };
 
-export default init;
-
-export const handler = async (req, res) => {
-  const server = await init();
-  return server.listener(req, res);
-};
+init();
