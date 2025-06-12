@@ -116,7 +116,7 @@ export const GroqHandler = async (request, h) => {
         {
           role: "system",
           content: `
-              Anda adalah asisten kesehatan AI yang ahli dalam memberikan informasi kulit secara jelas dan aman.
+              Anda adalah asisten kesehatan AI yang ahli dalam memberikan informasi kulit secara jelas dan aman dalam BAHASA INDONESIA.
               Tugas Anda adalah memberikan jawaban dalam dua bagian yang dipisahkan oleh '---PEMISAH---'.
 
               Ikuti contoh format jawaban yang WAJIB ini dengan tepat:
