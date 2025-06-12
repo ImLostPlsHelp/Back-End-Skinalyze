@@ -1,15 +1,15 @@
 import Hapi from "@hapi/hapi";
 import dotenv from "dotenv";
 import { routes } from "./routes.js";
-dotenv.config();
+dotenv.config(); // Panggil ini di awal
 
 const init = async () => {
   const server = Hapi.server({
-    port: process.env.PORT || 3000,
-    host: "0.0.0.0",
+    port: process.env.PORT || 3000, // Render akan menyediakan process.env.PORT
+    host: "0.0.0.0",         // Penting untuk lingkungan container seperti Render
     routes: {
       cors: {
-        origin: ["https://capstone-dbs-skinalyze.vercel.app"],
+        origin: ["https://capstone-dbs-skinalyze.vercel.app"], // Sesuaikan jika frontend juga pindah
         credentials: true,
         headers: [
           "Accept",
@@ -27,8 +27,12 @@ const init = async () => {
   });
 
   server.route(routes);
-  server.initialize();
+  // await server.initialize(); // Ganti ini
+  await server.start();      // Dengan ini untuk memulai server
   console.log("Server running on", server.info.uri);
 };
 
-init();
+init().catch((err) => { // Tambahkan penanganan error untuk init
+    console.error("Failed to start server:", err);
+    process.exit(1);
+});
