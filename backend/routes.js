@@ -13,22 +13,22 @@ export const routes = [
     },
     {
         method: 'POST',
-        path: '/get-groq-advice',
+        path: '/api/get-groq-advice',
         handler: GroqHandler,
     },
     {
         method: 'POST',
-        path: '/save-result',
+        path: '/api/save-result',
         handler: saveResultHandler,
     },
     {
         method: 'GET',
-        path: '/get-result',
+        path: '/api/get-result',
         handler: getScanHistoryHandler,
     },
     {
         method: 'GET',
-        path: '/get-profile',
+        path: '/api/get-profile',
         handler: getUserInformation,
     }
 ];

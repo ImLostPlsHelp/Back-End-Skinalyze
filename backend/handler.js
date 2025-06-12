@@ -81,6 +81,9 @@ export const LoginHandler = async (request, h) => {
 
     return h.response({
       message: "Login Successful",
+      headers: {
+        "Access-Control-Allow-Origin": "https://capstone-dbs-skinalyze.vercel.app",
+      },
       user: {
         uid: user.uid,
         email: user.email,
