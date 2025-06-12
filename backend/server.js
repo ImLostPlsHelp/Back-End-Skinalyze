@@ -21,7 +21,6 @@ const init = async () => {
         ],
         exposedHeaders: ["WWW-Authenticate", "Server-Authorization"],
         maxAge: 600
-        // ✅ Jangan tambahkan 'methods' di sini
       }
     }
   });

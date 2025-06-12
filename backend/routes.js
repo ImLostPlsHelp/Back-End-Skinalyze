@@ -38,12 +38,4 @@ export const routes = [
     path: "/api/get-profile",
     handler: getUserInformation,
   },
-  {
-    method: "OPTIONS",
-    path: "/{any*}", // Menangkap semua path untuk metode OPTIONS
-    handler: (request, h) => {
-      console.log("OPTIONS handler / {any*} di backend/routes.js terpanggil untuk path:", request.path); // Tambahkan log ini
-      return h.response().code(204);
-    },
-  },
 ];
