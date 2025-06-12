@@ -54,21 +54,49 @@ export const LoginHandler = async (request, h) => {
   }
 
   try {
-    const login = getAuth();
-    await signInWithEmailAndPassword(login, email, password).then(
-      (userCredential) => {
-        const user = userCredential.user;
-        return h.response({
-          message: "Login Successful",
-          user: {
-            uid: user.uid,
-            email: user.email,
-          },
-        });
-      }
-    );
+    const clientAuth = getAuth(); // Mengasumsikan getAuth() adalah dari client SDK
+    const userCredential = await signInWithEmailAndPassword(clientAuth, email, password);
+    const user = userCredential.user;
+    const uid = user.uid;
+
+    // Ambil informasi pengguna dari koleksi 'user-information'
+    const userDocRef = db.collection("user-information").doc(uid);
+    const docSnapshot = await userDocRef.get();
+
+    let firstName = "";
+    let lastName = "";
+
+    if (docSnapshot.exists) {
+      const userInfo = docSnapshot.data();
+      firstName = userInfo.firstName || "";
+      lastName = userInfo.lastName || "";
+    } else {
+      // Handle kasus di mana dokumen informasi pengguna tidak ditemukan,
+      // meskipun ini seharusnya tidak terjadi jika SignUpHandler berjalan dengan benar.
+      console.warn(`User information not found for UID: ${uid}`);
+    }
+
+    // Anda mungkin juga ingin mengirim token ID ke klien untuk sesi berikutnya
+    const idToken = await user.getIdToken();
+
+    return h.response({
+      message: "Login Successful",
+      user: {
+        uid: user.uid,
+        email: user.email,
+        firstName: firstName,
+        lastName: lastName,
+        token: idToken, // Kirim token ke client
+      },
+    }).code(200); // Login sukses biasanya 200
+
   } catch (error) {
     console.error("Error Logging in:", error);
+    // Pertimbangkan untuk memberikan kode status yang lebih spesifik, misal 401 untuk kredensial salah
+    // atau berdasarkan kode error Firebase
+    if (error.code === 'auth/invalid-credential' || error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
+      return h.response({ error: "Email atau password salah." }).code(401);
+    }
     return h.response({ error: "Gagal masuk. Silakan coba lagi." }).code(500);
   }
 };
