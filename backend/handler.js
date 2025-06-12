@@ -115,9 +115,22 @@ export const GroqHandler = async (request, h) => {
       messages: [
         {
           role: "system",
-          content:
-            "Anda adalah asisten kesehatan virtual yang memberikan informasi umum dalam Bahasa Indonesia. Jangan pernah memberikan diagnosis atau resep medis. Jelaskan secara singkat apa itu kondisi kulit yang disebutkan, lalu berikan beberapa tips perawatan umum yang aman dan tidak bersifat medis. Selalu akhiri dengan peringatan untuk berkonsultasi dengan dokter profesional.",
-        },
+          content: `
+              Anda adalah asisten kesehatan virtual yang memberikan informasi umum.
+              Tugas Anda adalah membuat DUA bagian dalam satu jawaban:
+              1.  DESKRIPSI: Jelaskan secara singkat apa itu kondisi kulit yang disebutkan.
+              2.  SARAN: Berikan beberapa tips perawatan umum yang aman dan tidak bersifat medis.
+
+              PENTING: Setelah menulis bagian DESKRIPSI, sisipkan sebuah pemisah unik di baris baru yaitu: ---PEMISAH---
+              
+              Contoh format jawaban yang benar:
+              [Ini adalah paragraf deskripsi penyakitnya...]
+              ---PEMISAH---
+              [Ini adalah paragraf saran perawatannya...]
+
+              Selalu akhiri bagian SARAN dengan peringatan untuk berkonsultasi dengan dokter profesional. Jangan pernah memberikan diagnosis atau resep medis.
+            `,
+          },
         {
           role: "user",
           content: `Tolong berikan informasi dan saran umum untuk kondisi: ${disease}`,
@@ -129,7 +142,7 @@ export const GroqHandler = async (request, h) => {
 
     const advice =
       chatCompletion.choices[0]?.message?.content ||
-      "Saran tidak dapat dibuat saat ini.";
+      "Deskripsi dan saran tidak dapat dibuat saat ini.";
     return h.response({ advice }).code(200);
   } catch (error) {
     console.error("Error calling Groq API:", error);
