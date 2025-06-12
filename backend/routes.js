@@ -38,4 +38,11 @@ export const routes = [
     path: "/api/get-profile",
     handler: getUserInformation,
   },
+  {
+    method: "OPTIONS",
+    path: "/{any*}",
+    handler: (request, h) => {
+      return h.response().code(200);
+    },
+  },
 ];
