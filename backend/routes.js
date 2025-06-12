@@ -1,4 +1,4 @@
-import {SignUpHandler, LoginHandler, GroqHandler, saveResultHandler, getScanHistoryHandler} from './handler.js';
+import {SignUpHandler, LoginHandler, GroqHandler, saveResultHandler, getScanHistoryHandler, getUserInformation} from './handler.js';
 
 export const routes = [
     {
@@ -25,5 +25,10 @@ export const routes = [
         method: 'GET',
         path: '/get-result',
         handler: getScanHistoryHandler,
+    },
+    {
+        method: 'GET',
+        path: '/get-profile',
+        handler: getUserInformation,
     }
 ];

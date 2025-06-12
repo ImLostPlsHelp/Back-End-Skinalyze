@@ -4,7 +4,7 @@ import express from "express";
 import Groq from "groq-sdk";
 import dotenv from "dotenv";
 import { nanoid } from "nanoid";
-import { getDocs } from "firebase/firestore";
+import { doc, getDoc, getDocs } from "firebase/firestore";
 
 dotenv.config();
 
@@ -178,7 +178,6 @@ export const getScanHistoryHandler = async (request, h) => {
   }
 
   try {
-    // Menggunakan Firebase Admin SDK untuk query Firestore
     const snapshot = await db.collection("save-result").where("uid", "==", uid).get();
 
     const results = [];
@@ -196,7 +195,54 @@ export const getScanHistoryHandler = async (request, h) => {
     }).code(200);
 
   } catch (error) {
-    console.error("Error fetching from Firestore:", error); // Error akan tercetak di sini
+    console.error("Error fetching from Firestore:", error);
     return h.response({ error: "Gagal mengambil riwayat scan." }).code(500);
   }
 };
+
+export const getUserInformation = async (request, h) => {
+  const authToken = request.headers.authorization;
+  let uid = null;
+
+  if (!authToken) {
+    return h.response({ error: "Unauthorized" }).code(401);
+  }
+
+  try {
+    const decodedToken = await auth.verifyIdToken(authToken.replace("Bearer ", ""));
+    uid = decodedToken.uid;
+  } catch (error) {
+    console.error("Error Verifying Token:", error);
+    return h.response({ error: "Unauthorized" }).code(401);
+  }
+
+  if (!uid) {
+    console.error("No UID found in token");
+    return h.response({ error: "Unauthorized" }).code(401);
+  }
+
+  try {
+    const userDocRef = db.collection("user-information").doc(uid);
+
+    const docSnapshot = await userDocRef.get();
+
+    if(!docSnapshot.exists) {
+      return h.response({ message: "User information not found" }).code(404);
+    }
+
+    const userInfo = docSnapshot.data();
+
+    return h.response({
+      message: "Riwayat scan berhasil diambil",
+      user: {
+        uid: docSnapshot.id,
+        ...userInfo,
+      },
+    }).code(200);
+
+  } catch (error) {
+    console.error("Error fetching from Firestore:", error);
+    return h.response({ error: "Gagal mengambil riwayat scan." }).code(500);
+  }
+};
+
