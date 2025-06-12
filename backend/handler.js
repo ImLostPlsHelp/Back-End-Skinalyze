@@ -133,7 +133,7 @@ export const GroqHandler = async (request, h) => {
     return h.response({ advice }).code(200);
   } catch (error) {
     console.error("Error calling Groq API:", error);
-    h.response({ error: "Failed to generate advice" }).code(500);
+    return h.response({ error: "Failed to generate advice" }).code(500);
   }
 };
 
