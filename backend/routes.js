@@ -5,6 +5,12 @@ export const routes = [
         method: 'POST',
         path: '/api/signup',
         handler: SignUpHandler,
+        options: {
+            cors: {
+                origin: ['https://capstone-dbs-skinalyze.vercel.app'],
+                credentials: true,
+            }
+        }
     },
     {
         method: 'POST',
