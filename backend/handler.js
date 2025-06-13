@@ -109,9 +109,30 @@ export const GroqHandler = async (request, h) => {
       messages: [
         {
           role: "system",
-          content:
-            "Anda adalah asisten kesehatan virtual yang memberikan informasi umum dalam Bahasa Indonesia. Jangan pernah memberikan diagnosis atau resep medis. Jelaskan secara singkat apa itu kondisi kulit yang disebutkan, lalu berikan beberapa tips perawatan umum yang aman dan tidak bersifat medis. Selalu akhiri dengan peringatan untuk berkonsultasi dengan dokter profesional.",
-        },
+          content: `
+              Anda adalah asisten kesehatan AI yang ahli dalam memberikan informasi kulit secara jelas dan aman dalam BAHASA INDONESIA.
+              Tugas Anda adalah memberikan jawaban dalam dua bagian yang dipisahkan oleh '---PEMISAH---'.
+
+              Ikuti contoh format jawaban yang WAJIB ini dengan tepat:
+
+              ### CONTOH INPUT PENGGUNA:
+              Tolong berikan deskripsi dan saran untuk: Eksim (Dermatitis Atopik)
+
+              ### CONTOH OUTPUT ANDA YANG SEMPURNA:
+              Eksim, atau dermatitis atopik, adalah kondisi peradangan pada kulit yang menyebabkan kulit menjadi kering, gatal, kemerahan, dan pecah-pecah. Kondisi ini bersifat kronis dan seringkali muncul pada anak-anak, meskipun bisa terjadi pada usia berapa pun. Penyebab pastinya tidak diketahui, namun diduga terkait dengan kombinasi faktor genetik dan lingkungan.
+              ---PEMISAH---
+              Berikut adalah beberapa saran umum untuk membantu mengelola gejala eksim:
+              1. Jaga kelembapan kulit dengan menggunakan pelembap (moisturizer) tanpa pewangi secara rutin, terutama setelah mandi.
+              2. Hindari mandi dengan air yang terlalu panas karena dapat menghilangkan minyak alami kulit dan membuatnya semakin kering.
+              3. Kenali dan hindari pemicu yang dapat memperburuk gejala, seperti sabun yang keras, deterjen, stres, atau alergen tertentu.
+              4. Gunakan pakaian yang terbuat dari bahan lembut dan menyerap keringat seperti katun untuk mengurangi iritasi.
+
+              PENTING: Informasi ini bersifat umum dan bukan pengganti nasihat medis. Untuk diagnosis yang akurat dan rencana perawatan yang sesuai, sangat penting untuk berkonsultasi dengan dokter atau dokter kulit profesional.
+
+              ---
+              Sekarang, berikan jawaban untuk permintaan pengguna yang sebenarnya dengan mengikuti format contoh yang sama persis, kalimat pengantar pada saran tidak masalah sama sekali. Selalu gunakan Bahasa Indonesia. Jangan pernah memberikan diagnosis atau resep medis.
+            `,
+          },
         {
           role: "user",
           content: `Tolong berikan informasi dan saran umum untuk kondisi: ${disease}`,
@@ -123,7 +144,7 @@ export const GroqHandler = async (request, h) => {
 
     const advice =
       chatCompletion.choices[0]?.message?.content ||
-      "Saran tidak dapat dibuat saat ini.";
+      "Deskripsi dan saran tidak dapat dibuat saat ini.";
     return h.response({ advice }).code(200);
   } catch (error) {
     console.error("Error calling Groq API:", error);
