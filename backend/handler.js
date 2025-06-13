@@ -54,12 +54,11 @@ export const LoginHandler = async (request, h) => {
   }
 
   try {
-    const clientAuth = getAuth(); // Mengasumsikan getAuth() adalah dari client SDK
+    const clientAuth = getAuth();
     const userCredential = await signInWithEmailAndPassword(clientAuth, email, password);
     const user = userCredential.user;
     const uid = user.uid;
 
-    // Ambil informasi pengguna dari koleksi 'user-information'
     const userDocRef = db.collection("user-information").doc(uid);
     const docSnapshot = await userDocRef.get();
 
@@ -71,12 +70,9 @@ export const LoginHandler = async (request, h) => {
       firstName = userInfo.firstName || "";
       lastName = userInfo.lastName || "";
     } else {
-      // Handle kasus di mana dokumen informasi pengguna tidak ditemukan,
-      // meskipun ini seharusnya tidak terjadi jika SignUpHandler berjalan dengan benar.
       console.warn(`User information not found for UID: ${uid}`);
     }
 
-    // Anda mungkin juga ingin mengirim token ID ke klien untuk sesi berikutnya
     const idToken = await user.getIdToken();
 
     return h.response({
@@ -86,14 +82,12 @@ export const LoginHandler = async (request, h) => {
         email: user.email,
         firstName: firstName,
         lastName: lastName,
-        token: idToken, // Kirim token ke client
+        token: idToken,
       },
-    }).code(200); // Login sukses biasanya 200
+    }).code(200);
 
   } catch (error) {
     console.error("Error Logging in:", error);
-    // Pertimbangkan untuk memberikan kode status yang lebih spesifik, misal 401 untuk kredensial salah
-    // atau berdasarkan kode error Firebase
     if (error.code === 'auth/invalid-credential' || error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
       return h.response({ error: "Email atau password salah." }).code(401);
     }

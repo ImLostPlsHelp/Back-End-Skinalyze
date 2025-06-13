@@ -1,7 +1,7 @@
 import Hapi from "@hapi/hapi";
 import dotenv from "dotenv";
 import { routes } from "./routes.js";
-dotenv.config(); // Panggil ini di awal
+dotenv.config();
 
 const init = async () => {
   const server = Hapi.server({
